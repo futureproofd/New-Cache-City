@@ -1,0 +1,12 @@
+{
+  "extends": ["airbnb"],
+  "root": true,
+  "parser": "babel-eslint",
+  "plugins": ["react", "jsx-a11y", "import"],
+  "rules": {
+    "linebreak-style": 0,
+    "react/prop-types": 0,
+    "react/jsx-filename-extension": [0],
+    "react/react-in-jsx-scope": [0]
+  }
+}
