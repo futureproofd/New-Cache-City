@@ -6,6 +6,7 @@ import Layout from './Layout';
 import Test from './Test';
 import Caches from './Caches';
 import Map from './Map';
+import Register from './Register';
 
 class App extends Component {
   render() {
@@ -34,6 +35,14 @@ class App extends Component {
             render={props => (
               <Layout {...props}>
                 <Map />
+              </Layout>
+            )}
+          />
+          <Route
+            path="/register"
+            render={props => (
+              <Layout {...props}>
+                <Register />
               </Layout>
             )}
           />

@@ -6,6 +6,7 @@ const Nav = () => (
   <NavStyle>
     <Link to="/caches">Caches</Link>
     <Link to="/map">Map</Link>
+    <Link to="/register">Register</Link>
   </NavStyle>
 );
 

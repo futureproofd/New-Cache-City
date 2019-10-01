@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const app = require('./app');
 
 // import env variables from our file
 require('dotenv').config({ path: 'variables.env' });
@@ -10,6 +9,11 @@ mongoose.Promise = global.Promise; // ES6 Promises
 mongoose.connection.on('error', (err) => {
   console.error(`${err.message}`);
 });
+
+// import model singletons
+require('./model/User');
+
+const app = require('./app');
 
 // Start server
 app.set('port', process.env.PORT || 7889);
