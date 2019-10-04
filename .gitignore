@@ -4,4 +4,5 @@
 
 # production
 /frontend/build
+/frontend/variables.env
 /backend/variables.env

@@ -7,6 +7,8 @@ const Nav = () => (
     <Link to="/caches">Caches</Link>
     <Link to="/map">Map</Link>
     <Link to="/register">Register</Link>
+    <Link to="/login">Login</Link>
+    <Link to="/account">Account</Link>
   </NavStyle>
 );
 

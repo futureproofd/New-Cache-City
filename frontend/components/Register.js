@@ -1,46 +1,48 @@
 /* eslint-disable indent */
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 
+import { Redirect } from 'react-router-dom';
 import Form from '../styles/Form';
-import registerReducer from './reducers/registerReducer';
-import useRegistration from './hooks/useRegistration';
-
-const initialState = {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  loading: false,
-  error: '',
-  registered: false,
-};
+import usePostAPI from './hooks/usePostAPI';
 
 const Register = () => {
-  const [state, dispatch] = useReducer(registerReducer, initialState);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   // API Registration Hook
-  useRegistration(state.loading, { ...state });
+  const [res, registerUser] = usePostAPI('http://localhost:7888/api/register', {
+    name,
+    email,
+    password,
+    confirmPassword,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({ type: 'login' });
+    registerUser();
   };
+
+  if (res.loading) {
+    return <p>Loading</p>;
+  }
+
+  if (res.data) {
+    return <Redirect to={res.data.redirectURI} />;
+  }
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
       <fieldset>
         <h2>Sign up for an Account</h2>
         <label htmlFor="email">
-          Email
+          Email (Your Account)
           <input
             type="email"
             placeholder="email"
-            onChange={e => dispatch({
-                type: 'input',
-                name: 'email',
-                value: e.target.value,
-              })
-            }
-            value={state.email}
+            onChange={e => setEmail(e.target.value)}
+            value={email}
           />
         </label>
         <label htmlFor="name">
@@ -48,13 +50,8 @@ const Register = () => {
           <input
             type="text"
             placeholder="Name"
-            onChange={e => dispatch({
-                type: 'input',
-                name: 'name',
-                value: e.target.value,
-              })
-            }
-            value={state.name}
+            onChange={e => setName(e.target.value)}
+            value={name}
           />
         </label>
         <label htmlFor="password">
@@ -62,13 +59,8 @@ const Register = () => {
           <input
             type="password"
             placeholder="password"
-            onChange={e => dispatch({
-                type: 'input',
-                name: 'password',
-                value: e.target.value,
-              })
-            }
-            value={state.password}
+            onChange={e => setPassword(e.target.value)}
+            value={password}
           />
         </label>
         <label htmlFor="password">
@@ -76,13 +68,8 @@ const Register = () => {
           <input
             type="password"
             placeholder="password"
-            onChange={e => dispatch({
-                type: 'input',
-                name: 'confirmPassword',
-                value: e.target.value,
-              })
-            }
-            value={state.confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
           />
         </label>
         <button type="submit">Sign Up!</button>

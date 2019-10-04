@@ -8,13 +8,32 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const routes = require('./routes/index.js');
-// invoke our local passport strategy on the User model
+// invoke a default, local passport strategy on the User model to provide sessions
 require('./handlers/passportLocal');
 
 // create Express application
 const app = express();
 
-app.use(cors());
+const whitelist = [process.env.DEV_ORIGIN, process.env.PROD_ORIGIN];
+
+// CORS Policy for client access (sessions)
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    allowedHeaders: [
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
+    ],
+    credentials: true,
+    methods: ['GET', 'PUT', 'POST'],
+    optionsSuccessStatus: 200, // avoid legacy browser choke on default 204
+  }),
+);
 
 // convert raw requests to JSON properties on req.body
 app.use(bodyParser.json());
