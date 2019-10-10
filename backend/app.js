@@ -8,6 +8,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const routes = require('./routes/index.js');
+const errorHandlers = require('./handlers/errorHandlers');
 // invoke a default, local passport strategy on the User model to provide sessions
 require('./handlers/passportLocal');
 
@@ -61,5 +62,8 @@ app.use(flash());
 
 // handle routes
 app.use('/', routes);
+
+// Chain of responsibility here: if any defined routes fail, default to this
+app.use(errorHandlers.productionErrors);
 
 module.exports = app;

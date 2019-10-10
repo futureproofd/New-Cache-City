@@ -1,14 +1,13 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 
-export default function (url, payload) {
+export default function (url, data) {
   const [res, setRes] = useState({ data: null, error: null, loading: false });
 
   const callAPI = useCallback(() => {
     setRes(prevState => ({ ...prevState, loading: true }));
-    console.log('postAPI Data:', payload);
     axios
-      .post(url, payload, { withCredentials: true })
+      .get(url, { withCredentials: true })
       .then((resolve) => {
         setRes({
           data: resolve.data,
@@ -26,6 +25,6 @@ export default function (url, payload) {
           errors,
         });
       });
-  }, [url, payload]);
+  }, [url, data]);
   return [res, callAPI];
 }

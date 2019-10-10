@@ -1,30 +1,51 @@
 /* eslint-disable indent */
-import React from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import ErrorMessage from './ErrorMessage';
+import usePostAPI from './hooks/usePostAPI';
 import Form from '../styles/Form';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // API Login Hook
+  const [res, loginUser] = usePostAPI('http://localhost:7888/api/login', {
+    email,
+    password,
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
-    axios
-      .get('http://localhost:7888/api/account', { withCredentials: true })
-      .then((res) => {
-        console.log(res);
-      });
+    loginUser();
   };
+
+  if (res.data) {
+    return <Redirect to={res.data.redirectURI} />;
+  }
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <fieldset>
+      <fieldset disabled={res.loading} aria-busy={res.loading}>
         <h2>Login</h2>
+        <ErrorMessage errors={res.errors} />
         <label htmlFor="email">
           Login (Your Email)
-          <input type="text" placeholder="email" />
+          <input
+            type="email"
+            placeholder="email"
+            onChange={e => setEmail(e.target.value)}
+            value={email}
+          />
         </label>
         <label htmlFor="password">
           Password
-          <input type="password" placeholder="password" />
+          <input
+            type="password"
+            placeholder="password"
+            onChange={e => setPassword(e.target.value)}
+            value={password}
+          />
         </label>
         <button type="submit">Login</button>
       </fieldset>

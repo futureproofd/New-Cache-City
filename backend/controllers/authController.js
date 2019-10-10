@@ -7,18 +7,26 @@ exports.login = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.redirect('/');
+      // send a redirect URI back to react-land for routing purposes
+      return res
+        .status(403)
+        .send({ errors: 'Unsuccessful login attempt!', redirectURI: '/' });
     }
-
     // req / res held in closure
     req.logIn(user, (error) => {
       if (error) {
         return next(err);
       }
       // send a redirect URI back to react-land for routing purposes
-      return res.status(201).send({ user: user.email, redirectURI: '/' });
+      res.status(201).send({ user: user.email, redirectURI: '/' });
+      next();
     });
   })(req, res, next);
+};
+
+exports.logout = (req, res) => {
+  req.logout();
+  res.status(200).send({ redirectURI: '/' });
 };
 
 /**
@@ -30,7 +38,6 @@ exports.isLoggedIn = (req, res, next) => {
     next();
     return;
   }
-  req.flash('error', 'You must be logged in');
   res.status(401).send('Unauthorized. Please Login');
 };
 

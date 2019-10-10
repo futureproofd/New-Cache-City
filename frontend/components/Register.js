@@ -1,32 +1,42 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-use-before-define */
 /* eslint-disable indent */
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Redirect } from 'react-router-dom';
+import ErrorMessage from './ErrorMessage';
 import Form from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
+import useForm from './hooks/useForm';
+import validate from './helpers/validator';
 
+/**
+ * Note: The order of declaration matters here:
+ * the callback function needs to be defined before being used in the useForm hook
+ * the useForm hook needs to be declared before usePostAPI, in order to pass
+ * the 'values' slice of state to the usePostAPI hook
+ */
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  // API Registration Hook
-  const [res, registerUser] = usePostAPI('http://localhost:7888/api/register', {
-    name,
-    email,
-    password,
-    confirmPassword,
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // 1. useForm hook callback
+  const submitUserRegistration = (e) => {
+    if (e) e.preventDefault();
     registerUser();
   };
 
-  if (res.loading) {
-    return <p>Loading</p>;
-  }
+  // 2. create hook
+  const {
+ values, errors, handleChange, handleSubmit 
+} = useForm(
+    submitUserRegistration,
+    validate
+  );
+
+  // 3. API Registration Hook
+  const [res, registerUser] = usePostAPI(
+    'http://localhost:7888/api/register',
+    values
+  );
 
   if (res.data) {
     return <Redirect to={res.data.redirectURI} />;
@@ -34,42 +44,49 @@ const Register = () => {
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <fieldset>
-        <h2>Sign up for an Account</h2>
+      <fieldset disabled={res.loading} aria-busy={res.loading}>
+        <h2>Create an Account</h2>
+        <ErrorMessage errors={res.errors} />
         <label htmlFor="email">
           Email (Your Account)
           <input
+            name="email"
             type="email"
             placeholder="email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
+            onChange={handleChange}
+            value={values.email || ''}
           />
+          {errors.email && <p>{errors.email}</p>}
         </label>
         <label htmlFor="name">
           Name
           <input
+            name="name"
             type="text"
             placeholder="Name"
-            onChange={e => setName(e.target.value)}
-            value={name}
+            onChange={handleChange}
+            value={values.name || ''}
           />
         </label>
         <label htmlFor="password">
           Password
           <input
+            name="password"
             type="password"
             placeholder="password"
-            onChange={e => setPassword(e.target.value)}
-            value={password}
+            onChange={handleChange}
+            value={values.password || ''}
           />
+          {errors.password && <p>{errors.password}</p>}
         </label>
         <label htmlFor="password">
           Confirm Password
           <input
+            name="confirmPassword"
             type="password"
             placeholder="password"
-            onChange={e => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
+            onChange={handleChange}
+            value={values.confirmPassword || ''}
           />
         </label>
         <button type="submit">Sign Up!</button>

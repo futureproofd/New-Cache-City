@@ -74,6 +74,7 @@ exports.validateRegistration = [
 
     if (results.errors.length !== 0) {
       res.status(400).send({ errors: results.mapped(err => err.msg) });
+      return;
     }
     next();
   },
