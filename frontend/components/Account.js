@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import React from 'react';
 import axios from 'axios';
-import Form from '../styles/Form';
+import { Form } from '../styles/Form';
 
 const Account = () => {
   const handleSubmit = (e) => {

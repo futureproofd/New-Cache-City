@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Layout from '../components/Layout';
-import Test from '../components/Test';
+import Home from '../components/Home';
 import Caches from '../components/Caches';
 import Map from '../components/Map';
 import Register from '../components/Register';
 import Account from '../components/Account';
 import Login from '../components/Login';
-import AuthRoute from './AuthRoute';
 
 class Routes extends Component {
   render() {
@@ -21,7 +20,7 @@ class Routes extends Component {
             exact
             render={props => (
               <Layout {...props}>
-                <Test />
+                <Home />
               </Layout>
             )}
           />

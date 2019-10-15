@@ -37,7 +37,7 @@ exports.validateRegistration = [
     .withMessage('You must provide a name.')
     .isLength({ min: 3 })
     .withMessage('Must be at least 2 characters long.')
-    .isAlpha()
+    .isAlphanumeric()
     .withMessage('No numbers allowed.'),
 
   body('email')
@@ -58,7 +58,7 @@ exports.validateRegistration = [
     .isEmpty()
     .withMessage('Please confirm password.'),
   check('password')
-    .isLength({ min: 6 })
+    .isLength({ min: 8 })
     .matches('[0-9]')
     .matches('[a-z]')
     .matches('[A-Z]')

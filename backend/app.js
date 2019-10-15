@@ -64,6 +64,6 @@ app.use(flash());
 app.use('/', routes);
 
 // Chain of responsibility here: if any defined routes fail, default to this
-app.use(errorHandlers.productionErrors);
+// app.use(errorHandlers.productionErrors);
 
 module.exports = app;

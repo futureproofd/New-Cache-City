@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
 import usePostAPI from './hooks/usePostAPI';
-import Form from '../styles/Form';
+import { Form } from '../styles/Form';
 
 const Login = () => {
   const [email, setEmail] = useState('');

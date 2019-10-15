@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Redirect } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
-import Form from '../styles/Form';
+import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
 import validate from './helpers/validator';
@@ -56,7 +56,7 @@ const Register = () => {
             onChange={handleChange}
             value={values.email || ''}
           />
-          {errors.email && <p>{errors.email}</p>}
+          <Message>{errors.email}</Message>
         </label>
         <label htmlFor="name">
           Name
@@ -67,6 +67,7 @@ const Register = () => {
             onChange={handleChange}
             value={values.name || ''}
           />
+          <Message>{errors.name}</Message>
         </label>
         <label htmlFor="password">
           Password
@@ -77,7 +78,7 @@ const Register = () => {
             onChange={handleChange}
             value={values.password || ''}
           />
-          {errors.password && <p>{errors.password}</p>}
+          <Message>{errors.password}</Message>
         </label>
         <label htmlFor="password">
           Confirm Password
@@ -88,6 +89,7 @@ const Register = () => {
             onChange={handleChange}
             value={values.confirmPassword || ''}
           />
+          <Message>{errors.confirmPassword}</Message>
         </label>
         <button type="submit">Sign Up!</button>
       </fieldset>

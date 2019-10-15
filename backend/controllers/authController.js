@@ -40,10 +40,3 @@ exports.isLoggedIn = (req, res, next) => {
   }
   res.status(401).send('Unauthorized. Please Login');
 };
-
-exports.logout = (req, res) => {
-  // destroy session via passportJS method
-  req.logout();
-  req.flash('success', 'Logged out!');
-  res.redirect('/');
-};

@@ -8,7 +8,7 @@ const LogoStyle = styled.h1`
   transform: skew(-7deg);
   a {
     padding: 0.5rem 1rem;
-    background: ${props => props.theme.red};
+    background: ${props => props.theme.blue};
     color: black;
     text-transform: uppercase;
     text-decoration: none;

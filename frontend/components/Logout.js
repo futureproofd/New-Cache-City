@@ -2,11 +2,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import useGetAPI from './hooks/useGetAPI';
-import usePostAPI from './hooks/usePostAPI';
 
 const Logout = () => {
   // API Logout Hook
-  const [res, logoutUser] = usePostAPI('http://localhost:7888/api/logout', {});
+  const [res, logoutUser] = useGetAPI('http://localhost:7888/api/logout');
 
   const logout = () => {
     logoutUser();
@@ -17,12 +16,9 @@ const Logout = () => {
   }
 
   return (
-    <div>
-      <button type="button" onClick={e => logout()}>
-
-        Logout
-</button>
-    </div>
+    <button type="button" onClick={logout}>
+      Logout
+    </button>
   );
 };
 

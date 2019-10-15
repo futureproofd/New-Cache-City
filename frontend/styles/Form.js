@@ -12,7 +12,7 @@ const loading = keyframes`
   }
 `;
 
-const Form = styled.form`
+export const Form = styled.form`
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
   background: rgba(0, 0, 0, 0.02);
   border: 5px solid white;
@@ -33,13 +33,13 @@ const Form = styled.form`
     border: 1px solid black;
     &:focus {
       outline: 0;
-      border-color: ${props => props.theme.red};
+      border-color: ${props => props.theme.blue};
     }
   }
   button,
   input[type="submit"] {
     width: auto;
-    background: ${props => props.theme.red};
+    background: ${props => props.theme.blue};
     color: white;
     border: 0;
     font-size: 2rem;
@@ -71,4 +71,9 @@ const Form = styled.form`
   }
 `;
 
-export default Form;
+export const Message = styled.label`
+  margin-bottom: 0.2em;
+  color: red;
+  font-size: 1rem;
+  display: block;
+`;

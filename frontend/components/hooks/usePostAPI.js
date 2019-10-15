@@ -6,7 +6,6 @@ export default function (url, payload) {
 
   const callAPI = useCallback(() => {
     setRes(prevState => ({ ...prevState, loading: true }));
-    console.log('postAPI Data:', payload);
     axios
       .post(url, payload, { withCredentials: true })
       .then((resolve) => {

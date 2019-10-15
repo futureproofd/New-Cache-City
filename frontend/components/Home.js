@@ -3,36 +3,33 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import FooterStyle from '../styles/FooterStyle';
-import Logout from './Logout';
 
-class Footer extends Component {
-  renderMenu() {
+class Home extends Component {
+  renderContent() {
     switch (this.props.auth) {
       case null:
         return (
           <Fragment>
-            <Link to="/login">Login</Link>
+            <div>Default homepage</div>
           </Fragment>
         );
       case false:
         return (
           <Fragment>
-            <Link to="/login">Login</Link>
+            <div>Unauthenticated stuff goes here</div>
           </Fragment>
         );
       default:
         return (
           <Fragment>
-            <Logout />
+            <div>Authenticated User stuff goes here</div>
           </Fragment>
         );
     }
   }
 
   render() {
-    return <FooterStyle>{this.renderMenu()}</FooterStyle>;
+    return this.renderContent();
   }
 }
 
@@ -40,4 +37,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(Footer);
+export default connect(mapStateToProps)(Home);

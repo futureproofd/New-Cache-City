@@ -8,7 +8,7 @@ const Error = styled.div`
   border-left: 5px solid red;
   p {
     margin: 0;
-    font-weight: 50;
+    font-weight: 20;
   }
   strong {
     margin-right: 1rem;

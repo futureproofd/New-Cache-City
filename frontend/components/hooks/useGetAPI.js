@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 
-export default function (url, data) {
+export default function (url) {
   const [res, setRes] = useState({ data: null, error: null, loading: false });
 
   const callAPI = useCallback(() => {
@@ -25,6 +25,6 @@ export default function (url, data) {
           errors,
         });
       });
-  }, [url, data]);
+  }, [url]);
   return [res, callAPI];
 }
