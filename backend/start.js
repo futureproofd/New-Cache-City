@@ -12,6 +12,7 @@ mongoose.connection.on('error', (err) => {
 
 // import model singletons
 require('./model/User');
+require('./model/Cache');
 
 const app = require('./app');
 

@@ -37,6 +37,7 @@ app.use(
 );
 
 // convert raw requests to JSON properties on req.body
+// allow nested data with extended property
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // populate req.cookies with any

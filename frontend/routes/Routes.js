@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Layout from '../components/Layout';
 import Home from '../components/Home';
 import Caches from '../components/Caches';
+import AddCache from '../components/AddCache';
 import Map from '../components/Map';
 import Register from '../components/Register';
 import Account from '../components/Account';
@@ -29,6 +30,14 @@ class Routes extends Component {
             render={props => (
               <Layout {...props}>
                 <Caches />
+              </Layout>
+            )}
+          />
+          <Route
+            path="/addcache"
+            render={props => (
+              <Layout {...props}>
+                <AddCache />
               </Layout>
             )}
           />

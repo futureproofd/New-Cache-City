@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const cacheController = require('../controllers/cacheController');
 
 // confirm login session for user
 router.get('/api/current_user', (req, res) => {
@@ -28,5 +29,16 @@ router.get('/flash', (req, res) => {
   req.flash('info', 'Flash is back!');
   res.redirect('/');
 });
+
+/**
+ * Cache routes
+ */
+router.get('/api/caches', authController.isLoggedIn, cacheController.caches);
+
+router.post(
+  '/api/addcache',
+  authController.isLoggedIn,
+  cacheController.addCache,
+);
 
 module.exports = router;

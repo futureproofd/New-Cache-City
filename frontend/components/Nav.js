@@ -23,6 +23,7 @@ class Nav extends Component {
         return (
           <Fragment>
             <Link to="/caches">Caches</Link>
+            <Link to="/addcache">Create</Link>
             <Link to="/map">Map</Link>
             <Link to="/account">Account</Link>
           </Fragment>
