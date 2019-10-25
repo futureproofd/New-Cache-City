@@ -10,6 +10,13 @@ import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
 import validate from './helpers/validator';
+import useGetAPI from './hooks/useGetAPI';
+import {
+  SearchStyle,
+  DropDown,
+  DropDownItem,
+  DropDownButton
+} from '../styles/SearchStyle';
 
 /**
  * Note: The order of declaration matters here:
@@ -38,13 +45,46 @@ const AddCache = () => {
     values
   );
 
+  const [autocomplete, getAutocomplete] = useGetAPI(
+    `http://localhost:7888/api/autocomplete?q=${values.location}`
+  );
+
+  const [coordinates, getCoordinates] = useGetAPI(
+    `http://localhost:7888/api/coordinates?q=${values.location}`
+  );
+
+  const handleAutocomplete = (e) => {
+    if (e) e.preventDefault();
+    // usual form hook for submission
+    handleChange(e);
+    // get google locaiton
+    if (values.location) {
+      if (values.location.length >= 2) {
+        getAutocomplete();
+      }
+    }
+  };
+
+  // Auto-complete address selection and coordinates
+  const handleSelection = (e) => {
+    // get synthetic pooled, async event properties (pass in values from dropdown button event)
+    e.persist();
+    if (e) e.preventDefault();
+    // update location state
+    handleChange({ name: e.target.id, value: e.target.innerHTML });
+    getCoordinates();
+  };
+
   if (res.data) {
     return <Redirect to={res.data.redirectURI} />;
   }
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <fieldset disabled={res.loading} aria-busy={res.loading}>
+      <fieldset
+        disabled={res.loading}
+        aria-busy={res.loading || autocomplete.loading}
+      >
         <h2>Create a New Cache</h2>
         <ErrorMessage errors={res.errors} />
         <label htmlFor="name">
@@ -52,7 +92,7 @@ const AddCache = () => {
           <input
             name="name"
             type="text"
-            placeholder="Provide a name for others to see"
+            placeholder="Provide an intriguing Cache name"
             required
             onChange={handleChange}
             value={values.name || ''}
@@ -73,15 +113,32 @@ const AddCache = () => {
           <Message>{errors.name}</Message>
         </label>
         <label htmlFor="location">
-          Location (Approximate Address)
+          Location
           <input
             name="location"
             type="text"
-            placeholder="location"
+            placeholder="City, Park, Courtyard, Your favorite Tree"
             required
-            onChange={handleChange}
+            onChange={handleAutocomplete}
             value={values.location || ''}
           />
+          <SearchStyle>
+            <DropDown>
+              {autocomplete.data
+                && autocomplete.data.map(place => (
+                  <DropDownItem key={place.id} value={place.description}>
+                    <DropDownButton
+                      id="location"
+                      onClick={handleSelection}
+                      type="button"
+                      value={place.description}
+                    >
+                      {place.description}
+                    </DropDownButton>
+                  </DropDownItem>
+                ))}
+            </DropDown>
+          </SearchStyle>
           <Message>{errors.location}</Message>
         </label>
         <label htmlFor="coordinates">
@@ -107,6 +164,20 @@ const AddCache = () => {
           />
           <Message>{errors.longitude}</Message>
         </label>
+
+        {coordinates.data && (
+          <label htmlFor="map">
+            Exact Location
+            <input
+              name="map"
+              type="text"
+              placeholder="map stuff here"
+              value="todo"
+              onChange={e => console.log(e, 'todo')}
+            />
+          </label>
+        )}
+
         <label htmlFor="photo">
           Optional Photo
           <input

@@ -6,16 +6,16 @@ export default function (url) {
 
   const callAPI = useCallback(() => {
     setRes(prevState => ({ ...prevState, loading: true }));
-    axios
-      .get(url, { withCredentials: true })
-      .then((resolve) => {
+
+    async function fetchData() {
+      try {
+        const result = await axios.get(url, { withCredentials: true });
         setRes({
-          data: resolve.data,
+          data: result.data,
           loading: false,
           submitting: false,
         });
-      })
-      .catch((err) => {
+      } catch (err) {
         const errors = err.request.response
           ? JSON.parse(err.request.response)
           : err.message;
@@ -24,7 +24,10 @@ export default function (url) {
           loading: false,
           errors,
         });
-      });
+      }
+    }
+    // invoke async function for result
+    fetchData();
   }, [url]);
   return [res, callAPI];
 }

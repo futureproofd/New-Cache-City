@@ -4,6 +4,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const cacheController = require('../controllers/cacheController');
+const mapController = require('../controllers/mapContoller');
 
 // confirm login session for user
 router.get('/api/current_user', (req, res) => {
@@ -39,6 +40,21 @@ router.post(
   '/api/addcache',
   authController.isLoggedIn,
   cacheController.addCache,
+);
+
+/**
+ * Map routes
+ */
+router.get(
+  '/api/autocomplete',
+  authController.isLoggedIn,
+  mapController.autocomplete,
+);
+
+router.get(
+  '/api/coordinates',
+  authController.isLoggedIn,
+  mapController.geocodeAddress,
 );
 
 module.exports = router;

@@ -19,8 +19,21 @@ const useForm = (callback, validate) => {
     setIsSubmitting(true);
   };
 
+  // autocomplete popup handler
+  const handleAddressChange = (field) => {
+    setValues(state => ({
+      ...state,
+      [field.name]: [field.value],
+    }));
+  };
+
   const handleChange = (event) => {
-    event.persist();
+    if (event.target) {
+      event.persist();
+    } else {
+      handleAddressChange(event);
+      return;
+    }
     setValues(state => ({
       ...state,
       [event.target.name]: event.target.value,
