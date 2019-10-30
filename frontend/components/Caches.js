@@ -9,9 +9,11 @@ const items = [
   { id: 3, name: 'cache3' },
 ];
 
+const uri = process.env.DEV_API;
+
 const Caches = () => {
   // API Caches Hook
-  const [res, getCaches] = useGetCaches('http://localhost:7888/api/caches');
+  const [res, getCaches] = useGetCaches(`${uri}caches`);
 
   if (res.data) {
     console.log('data:', res.data);

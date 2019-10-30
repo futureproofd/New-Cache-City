@@ -5,12 +5,14 @@ import ErrorMessage from './ErrorMessage';
 import usePostAPI from './hooks/usePostAPI';
 import { Form } from '../styles/Form';
 
+const uri = process.env.DEV_API;
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   // API Login Hook
-  const [res, loginUser] = usePostAPI('http://localhost:7888/api/login', {
+  const [res, loginUser] = usePostAPI(`${uri}login`, {
     email,
     password,
   });

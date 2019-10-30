@@ -21,9 +21,11 @@ const useForm = (callback, validate) => {
 
   // autocomplete popup handler
   const handleAddressChange = (field) => {
+    const { name, value } = field;
+
     setValues(state => ({
       ...state,
-      [field.name]: [field.value],
+      [name]: value,
     }));
   };
 

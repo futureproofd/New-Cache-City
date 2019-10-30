@@ -1,10 +1,12 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-use-before-define */
 /* eslint-disable indent */
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Redirect } from 'react-router-dom';
+import GoogleMap from './Map';
 import ErrorMessage from './ErrorMessage';
 import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
@@ -17,13 +19,15 @@ import {
   DropDownItem,
   DropDownButton
 } from '../styles/SearchStyle';
-
+import MapStyle from '../styles/MapStyle';
 /**
  * Note: The order of declaration matters here:
  * the callback function needs to be defined before being used in the useForm hook
  * the useForm hook needs to be declared before usePostAPI, in order to pass
  * the 'values' slice of state to the usePostAPI hook
  */
+const uri = process.env.DEV_API;
+
 const AddCache = () => {
   // 1. useForm hook callback
   const submitCache = (e) => {
@@ -40,18 +44,15 @@ const AddCache = () => {
   );
 
   // 3. API Registration Hook
-  const [res, addCache] = usePostAPI(
-    'http://localhost:7888/api/addCache',
-    values
-  );
+  const [res, addCache] = usePostAPI(uri, values);
 
   const [autocomplete, getAutocomplete] = useGetAPI(
-    `http://localhost:7888/api/autocomplete?q=${values.location}`
+    `${uri}autocomplete?q=${values.location}`
   );
 
-  const [coordinates, getCoordinates] = useGetAPI(
-    `http://localhost:7888/api/coordinates?q=${values.location}`
-  );
+  const [coordinates, getCoordinates] = useGetAPI(`${uri}coordinates?q=`);
+
+  const [open, setOpen] = useState(false);
 
   const handleAutocomplete = (e) => {
     if (e) e.preventDefault();
@@ -61,6 +62,7 @@ const AddCache = () => {
     if (values.location) {
       if (values.location.length >= 2) {
         getAutocomplete();
+        setOpen(!open);
       }
     }
   };
@@ -72,7 +74,9 @@ const AddCache = () => {
     if (e) e.preventDefault();
     // update location state
     handleChange({ name: e.target.id, value: e.target.innerHTML });
-    getCoordinates();
+    // use google-generated result in query param
+    getCoordinates(e.target.innerHTML);
+    setOpen(false);
   };
 
   if (res.data) {
@@ -113,7 +117,7 @@ const AddCache = () => {
           <Message>{errors.name}</Message>
         </label>
         <label htmlFor="location">
-          Location
+          General location
           <input
             name="location"
             type="text"
@@ -123,58 +127,33 @@ const AddCache = () => {
             value={values.location || ''}
           />
           <SearchStyle>
-            <DropDown>
-              {autocomplete.data
-                && autocomplete.data.map(place => (
-                  <DropDownItem key={place.id} value={place.description}>
-                    <DropDownButton
-                      id="location"
-                      onClick={handleSelection}
-                      type="button"
-                      value={place.description}
-                    >
-                      {place.description}
-                    </DropDownButton>
-                  </DropDownItem>
-                ))}
-            </DropDown>
+            {open && (
+              <DropDown>
+                {autocomplete.data
+                  && autocomplete.data.map(place => (
+                    <DropDownItem key={place.id} value={place.description}>
+                      <DropDownButton
+                        id="location"
+                        onClick={handleSelection}
+                        type="button"
+                        value={place.description}
+                      >
+                        {place.description}
+                      </DropDownButton>
+                    </DropDownItem>
+                  ))}
+              </DropDown>
+            )}
           </SearchStyle>
           <Message>{errors.location}</Message>
         </label>
-        <label htmlFor="coordinates">
-          GPS Coordinates
-          <input
-            name="Latitude"
-            type="text"
-            placeholder="latitude"
-            readOnly
-            required
-            onChange={handleChange}
-            value={values.latitude || ''}
-          />
-          <Message>{errors.latitude}</Message>
-          <input
-            name="longitude"
-            type="text"
-            placeholder="longitude"
-            readOnly
-            required
-            onChange={handleChange}
-            value={values.longitude || ''}
-          />
-          <Message>{errors.longitude}</Message>
-        </label>
 
         {coordinates.data && (
-          <label htmlFor="map">
-            Exact Location
-            <input
-              name="map"
-              type="text"
-              placeholder="map stuff here"
-              value="todo"
-              onChange={e => console.log(e, 'todo')}
-            />
+          <label>
+            Refine Cache location
+            <MapStyle>
+              <GoogleMap center={coordinates.data} name={values.name} />
+            </MapStyle>
           </label>
         )}
 

@@ -3,14 +3,14 @@ import React from 'react';
 import axios from 'axios';
 import { Form } from '../styles/Form';
 
+const uri = process.env.DEV_API;
+
 const Account = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .get('http://localhost:7888/api/account', { withCredentials: true })
-      .then((res) => {
-        console.log(res);
-      });
+    axios.get(`${uri}account`, { withCredentials: true }).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

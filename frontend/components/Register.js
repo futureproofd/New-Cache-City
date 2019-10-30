@@ -11,6 +11,7 @@ import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
 import validate from './helpers/validator';
 
+const uri = process.env.DEV_API;
 /**
  * Note: The order of declaration matters here:
  * the callback function needs to be defined before being used in the useForm hook
@@ -33,10 +34,7 @@ const Register = () => {
   );
 
   // 3. API Registration Hook
-  const [res, registerUser] = usePostAPI(
-    'http://localhost:7888/api/register',
-    values
-  );
+  const [res, registerUser] = usePostAPI(`${uri}register`, values);
 
   if (res.data) {
     return <Redirect to={res.data.redirectURI} />;

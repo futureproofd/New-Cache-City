@@ -1,4 +1,16 @@
-module.exports = {
+/* eslint-disable no-param-reassign */
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+const env = dotenv.config().parsed;
+
+// reduce it to a nice object, the same as before
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
+
+module.exports = () => ({
   entry: './src/index.js',
   module: {
     rules: [
@@ -22,4 +34,5 @@ module.exports = {
     open: true,
     port: 8080,
   },
-};
+  plugins: [new webpack.DefinePlugin(envKeys)],
+});
