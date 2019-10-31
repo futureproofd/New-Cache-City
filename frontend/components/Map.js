@@ -1,9 +1,29 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unused-state */
 /* eslint-disable prefer-const */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const MarkerComponent = ({ text }) => <div>{text}</div>;
+// marker component inline-style
+const MarkerComponent = ({ text }) => (
+  <div
+    style={{
+      color: 'white',
+      fontStyle: 'bold',
+      background: 'Blue',
+      padding: '5px 8px',
+      display: 'inline-flex',
+      textAlign: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '100%',
+      transform: 'translate(-50%, -50%)',
+    }}
+  >
+    {text}
+  </div>
+);
 
 class GoogleMap extends Component {
   constructor(props) {
@@ -16,7 +36,7 @@ class GoogleMap extends Component {
     };
   }
 
-  // Make marker component draggable
+  // Make marker component draggable (toggles draggable for entire map so Marker takes focus)
   onMouseDown = (childKey, childProps, mouse) => {
     this.setState({ draggable: false });
   };
@@ -30,18 +50,15 @@ class GoogleMap extends Component {
   onMouseUp = (childKey, childProps, mouse) => {
     this.setState({
       markerCenter: mouse,
-      center: mouse,
       draggable: true,
     });
   };
 
   render() {
-    let {
- center, draggable, markerCenter, name 
-} = this.state;
+    let { center, draggable, markerCenter } = this.state;
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '50vh', width: '90%' }}>
+      <div style={{ height: '50vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: `${process.env.GOOGLE_API_KEY}` }}
           defaultCenter={center}
@@ -54,7 +71,7 @@ class GoogleMap extends Component {
           <MarkerComponent
             lat={markerCenter.lat}
             lng={markerCenter.lng}
-            text={name}
+            text="X"
           />
         </GoogleMapReact>
       </div>

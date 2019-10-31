@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 const MapStyle = styled.div`
   .map {
-    padding: 20px;
+    padding: 100px;
     background: white;
     box-shadow: $shad;
   }
   #map {
-    height: 500px;
+    height: 400px;
   }
 
   .popup {

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable no-undef */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable comma-dangle */
@@ -19,7 +21,7 @@ import {
   DropDownItem,
   DropDownButton
 } from '../styles/SearchStyle';
-import MapStyle from '../styles/MapStyle';
+
 /**
  * Note: The order of declaration matters here:
  * the callback function needs to be defined before being used in the useForm hook
@@ -32,7 +34,7 @@ const AddCache = () => {
   // 1. useForm hook callback
   const submitCache = (e) => {
     if (e) e.preventDefault();
-    addCache();
+    setCache();
   };
 
   // 2. create hook
@@ -44,7 +46,7 @@ const AddCache = () => {
   );
 
   // 3. API Registration Hook
-  const [res, addCache] = usePostAPI(uri, values);
+  const [res, setCache] = usePostAPI(uri, values);
 
   const [autocomplete, getAutocomplete] = useGetAPI(
     `${uri}autocomplete?q=${values.location}`
@@ -54,6 +56,7 @@ const AddCache = () => {
 
   const [open, setOpen] = useState(false);
 
+  // map autocomplete
   const handleAutocomplete = (e) => {
     if (e) e.preventDefault();
     // usual form hook for submission
@@ -67,7 +70,7 @@ const AddCache = () => {
     }
   };
 
-  // Auto-complete address selection and coordinates
+  // Address selection and get coordinates
   const handleSelection = (e) => {
     // get synthetic pooled, async event properties (pass in values from dropdown button event)
     e.persist();
@@ -84,7 +87,12 @@ const AddCache = () => {
   }
 
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
+    <Form
+      method="POST"
+      onSubmit={(e) => {
+        handleSubmit(e);
+      }}
+    >
       <fieldset
         disabled={res.loading}
         aria-busy={res.loading || autocomplete.loading}
@@ -151,9 +159,7 @@ const AddCache = () => {
         {coordinates.data && (
           <label>
             Refine Cache location
-            <MapStyle>
-              <GoogleMap center={coordinates.data} name={values.name} />
-            </MapStyle>
+            <GoogleMap center={coordinates.data} name={values.name} />
           </label>
         )}
 
