@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 const mongoose = require('mongoose');
 const { promisify } = require('es6-promisify');
 const {
@@ -15,7 +16,12 @@ exports.register = async (req, res, next) => {
     name: req.body.name,
   });
   const register = promisify(User.register.bind(User));
-  await register(user, req.body.password);
+  try {
+    await register(user, req.body.password);
+  } catch (error) {
+    res.status(400).send({ errors: error });
+    return;
+  }
   next();
 };
 
@@ -36,9 +42,12 @@ exports.validateRegistration = [
     .isEmpty()
     .withMessage('You must provide a name.')
     .isLength({ min: 3 })
-    .withMessage('Must be at least 2 characters long.')
-    .isAlphanumeric()
-    .withMessage('No numbers allowed.'),
+    .withMessage('Must be at least 3 characters long.')
+    .not()
+    .matches(
+      /\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|\""|\;|\:/,
+    )
+    .withMessage('No special characters allowed.'),
 
   body('email')
     .isEmail()
@@ -58,10 +67,10 @@ exports.validateRegistration = [
     .isEmpty()
     .withMessage('Please confirm password.'),
   check('password')
-    .isLength({ min: 8 })
-    .matches('[0-9]')
-    .matches('[a-z]')
-    .matches('[A-Z]')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/)
+    .withMessage(
+      'Password must be at least 8 characters, contain one uppercase, one lowercase, and one number.',
+    )
     .custom((value, { req, loc, path }) => {
       if (value !== req.body.confirmPassword) {
         return false;

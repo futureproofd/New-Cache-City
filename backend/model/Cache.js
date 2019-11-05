@@ -13,13 +13,13 @@ const cacheSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: [validator.isAlphanumeric, 'Invalid Cache name'],
+    validate: [validator.isAscii, 'Invalid Cache name'],
     required: 'Please provide a name for this Cache',
   },
   description: {
     type: String,
     unique: false,
-    validate: [validator.isAlphanumeric, 'Invalid characters'],
+    validate: [validator.isAscii, 'Invalid characters'],
     required: 'Please provide a description of the Cache',
   },
   createDate: {
@@ -39,7 +39,7 @@ const cacheSchema = new Schema({
     ],
     address: {
       type: String,
-      required: 'You must supply a relative location',
+      required: 'You must supply a general location',
     },
   },
   photo: String,

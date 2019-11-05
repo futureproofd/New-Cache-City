@@ -25,13 +25,25 @@ const ErrorMessage = ({ errors }) => {
       </Error>
     );
   }
+  // express custom
+  if (typeof errors.errors === 'object') {
+    return Object.values(errors.errors).map((err, i) => (
+      <Error key={i}>
+        <p>
+          <strong>{`${err.name || err.param || 'Error'}: `}</strong>
+          {err.message || err.msg || 'Server error'}
+        </p>
+      </Error>
+    ));
+  }
 
-  // validation generated
-  return Object.values(errors.errors).map((err, i) => (
+  // validation / database generated
+  // database-related
+  return Object.values(errors).map((err, i) => (
     <Error key={i}>
       <p>
-        <strong>{`${err.param}: `}</strong>
-        {err.msg}
+        <strong>{`${err.name || err.param || 'Error'}: `}</strong>
+        {err.message || err.msg || 'Server error'}
       </p>
     </Error>
   ));

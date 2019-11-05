@@ -8,7 +8,6 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const routes = require('./routes/index.js');
-const errorHandlers = require('./handlers/errorHandlers');
 // invoke a default, local passport strategy on the User model to provide sessions
 require('./handlers/passportLocal');
 

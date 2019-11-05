@@ -24,6 +24,10 @@ export const Form = styled.form`
     display: block;
     margin-bottom: 1rem;
   }
+  h1 {
+    font-weight: 100;
+    font-size: 0.75rem;
+  }
   input,
   textarea,
   select {

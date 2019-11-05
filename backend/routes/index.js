@@ -39,6 +39,7 @@ router.get('/api/caches', authController.isLoggedIn, cacheController.caches);
 router.post(
   '/api/addcache',
   authController.isLoggedIn,
+  cacheController.validateCache,
   cacheController.addCache,
 );
 

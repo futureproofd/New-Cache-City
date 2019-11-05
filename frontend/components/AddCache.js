@@ -8,12 +8,12 @@
 import React, { useState } from 'react';
 
 import { Redirect } from 'react-router-dom';
-import GoogleMap from './Map';
 import ErrorMessage from './ErrorMessage';
+import GoogleMap from './Map';
 import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
-import validate from './helpers/validator';
+import { validateNewCache } from './helpers/validator';
 import useGetAPI from './hooks/useGetAPI';
 import {
   SearchStyle,
@@ -34,6 +34,7 @@ const AddCache = () => {
   // 1. useForm hook callback
   const submitCache = (e) => {
     if (e) e.preventDefault();
+    // call PostAPI method
     setCache();
   };
 
@@ -42,18 +43,20 @@ const AddCache = () => {
  values, errors, handleChange, handleSubmit 
 } = useForm(
     submitCache,
-    validate
+    validateNewCache
   );
 
-  // 3. API Registration Hook
-  const [res, setCache] = usePostAPI(uri, values);
+  // 3. API submit Hook
+  const [res, setCache] = usePostAPI(`${uri}addcache`, values);
 
+  /**
+   * Map-related hooks
+   */
   const [autocomplete, getAutocomplete] = useGetAPI(
     `${uri}autocomplete?q=${values.location}`
   );
 
   const [coordinates, getCoordinates] = useGetAPI(`${uri}coordinates?q=`);
-
   const [open, setOpen] = useState(false);
 
   // map autocomplete
@@ -76,7 +79,7 @@ const AddCache = () => {
     e.persist();
     if (e) e.preventDefault();
     // update location state
-    handleChange({ name: e.target.id, value: e.target.innerHTML });
+    handleChange({ [e.target.id]: e.target.innerHTML });
     // use google-generated result in query param
     getCoordinates(e.target.innerHTML);
     setOpen(false);
@@ -87,12 +90,7 @@ const AddCache = () => {
   }
 
   return (
-    <Form
-      method="POST"
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}
-    >
+    <Form method="POST" onSubmit={handleSubmit}>
       <fieldset
         disabled={res.loading}
         aria-busy={res.loading || autocomplete.loading}
@@ -122,7 +120,7 @@ const AddCache = () => {
             onChange={handleChange}
             value={values.description || ''}
           />
-          <Message>{errors.name}</Message>
+          <Message>{errors.description}</Message>
         </label>
         <label htmlFor="location">
           General location
@@ -159,7 +157,16 @@ const AddCache = () => {
         {coordinates.data && (
           <label>
             Refine Cache location
-            <GoogleMap center={coordinates.data} name={values.name} />
+            {values.coordinates && (
+              <h1>{`lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}</h1>
+            )}
+            <GoogleMap
+              handler={handleChange}
+              center={coordinates.data}
+              name={values.name}
+              value={values.coordinates}
+            />
+            <Message>{errors.coordinates}</Message>
           </label>
         )}
 

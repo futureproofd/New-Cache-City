@@ -6,7 +6,7 @@ const useForm = (callback, validate) => {
   // limit running of effect to when submitted
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // run effect whenever errors change (call callback function if no errors)
+  // run effect whenever errors change (call callback function i.e. form submit, if no errors)
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -19,26 +19,18 @@ const useForm = (callback, validate) => {
     setIsSubmitting(true);
   };
 
-  // autocomplete popup handler
-  const handleAddressChange = (field) => {
-    const { name, value } = field;
-
-    setValues(state => ({
-      ...state,
-      [name]: value,
-    }));
-  };
-
+  // handle synthetic/non-synthetic variety of field event handlers
   const handleChange = (event) => {
+    let data;
     if (event.target) {
       event.persist();
+      data = { [event.target.name]: event.target.value };
     } else {
-      handleAddressChange(event);
-      return;
+      data = { [Object.keys(event)[0]]: Object.values(event)[0] };
     }
     setValues(state => ({
       ...state,
-      [event.target.name]: event.target.value,
+      ...data,
     }));
   };
 

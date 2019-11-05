@@ -9,7 +9,7 @@ import ErrorMessage from './ErrorMessage';
 import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
-import validate from './helpers/validator';
+import { validateRegistration } from './helpers/validator';
 
 const uri = process.env.DEV_API;
 /**
@@ -30,7 +30,7 @@ const Register = () => {
  values, errors, handleChange, handleSubmit 
 } = useForm(
     submitUserRegistration,
-    validate
+    validateRegistration
   );
 
   // 3. API Registration Hook
@@ -50,7 +50,7 @@ const Register = () => {
           <input
             name="email"
             type="email"
-            placeholder="email"
+            placeholder="e-mail address"
             onChange={handleChange}
             value={values.email || ''}
           />
@@ -61,7 +61,7 @@ const Register = () => {
           <input
             name="name"
             type="text"
-            placeholder="Name"
+            placeholder="Display name"
             onChange={handleChange}
             value={values.name || ''}
           />
@@ -72,7 +72,7 @@ const Register = () => {
           <input
             name="password"
             type="password"
-            placeholder="password"
+            placeholder="8 Characters (Uppercase, Lowercase, Number, Special Char)"
             onChange={handleChange}
             value={values.password || ''}
           />
@@ -83,7 +83,7 @@ const Register = () => {
           <input
             name="confirmPassword"
             type="password"
-            placeholder="password"
+            placeholder="Confirm your password"
             onChange={handleChange}
             value={values.confirmPassword || ''}
           />

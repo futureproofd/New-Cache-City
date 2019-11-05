@@ -45,6 +45,8 @@ class GoogleMap extends Component {
     this.setState({
       markerCenter: mouse,
     });
+    let { lat, lng } = mouse;
+    this.props.handler({ coordinates: { lat, lng } });
   };
 
   onMouseUp = (childKey, childProps, mouse) => {
