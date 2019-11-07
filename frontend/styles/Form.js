@@ -27,6 +27,7 @@ export const Form = styled.form`
   h1 {
     font-weight: 100;
     font-size: 0.75rem;
+    padding: 0px;
   }
   input,
   textarea,
@@ -50,6 +51,9 @@ export const Form = styled.form`
     font-weight: 600;
     padding: 0.5rem 1.2rem;
     cursor: pointer;
+    &[disabled] {
+      opacity: 0.5;
+    }
   }
   fieldset {
     border: 0;

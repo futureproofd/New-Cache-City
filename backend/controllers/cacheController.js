@@ -28,7 +28,7 @@ exports.addCache = async (req, res) => {
         res.status(201).send({ cache, redirectURI: '/' });
       });
   } catch (err) {
-    res.status(500).send({ errors: err });
+    res.status(500).send({ err });
   }
 };
 

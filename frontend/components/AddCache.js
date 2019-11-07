@@ -8,13 +8,16 @@
 import React, { useState } from 'react';
 
 import { Redirect } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import ErrorMessage from './ErrorMessage';
 import GoogleMap from './Map';
-import { Form, Message } from '../styles/Form';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
 import { validateNewCache } from './helpers/validator';
 import useGetAPI from './hooks/useGetAPI';
+import useDebounce from './hooks/useDebounce';
+// styles
+import { Form, Message } from '../styles/Form';
 import {
   SearchStyle,
   DropDown,
@@ -29,6 +32,7 @@ import {
  * the 'values' slice of state to the usePostAPI hook
  */
 const uri = process.env.DEV_API;
+const captchaKey = process.env.GOOGLE_RECAPTCHA;
 
 const AddCache = () => {
   // 1. useForm hook callback
@@ -45,15 +49,20 @@ const AddCache = () => {
     submitCache,
     validateNewCache
   );
+  // debounce hook for location API - limit first call X seconds
+  const debouncedValue = useDebounce(values.location, 200);
 
   // 3. API submit Hook
   const [res, setCache] = usePostAPI(`${uri}addcache`, values);
+
+  // 3a. ReCaptcha validation hook
+  const [validationRes, setValidationRes] = useState(true);
 
   /**
    * Map-related hooks
    */
   const [autocomplete, getAutocomplete] = useGetAPI(
-    `${uri}autocomplete?q=${values.location}`
+    `${uri}autocomplete?q=${debouncedValue}`
   );
 
   const [coordinates, getCoordinates] = useGetAPI(`${uri}coordinates?q=`);
@@ -62,14 +71,12 @@ const AddCache = () => {
   // map autocomplete
   const handleAutocomplete = (e) => {
     if (e) e.preventDefault();
-    // usual form hook for submission
+    // first set form state, then use its value for debounce
     handleChange(e);
     // get google locaiton
-    if (values.location) {
-      if (values.location.length >= 2) {
-        getAutocomplete();
-        setOpen(!open);
-      }
+    if (debouncedValue) {
+      getAutocomplete();
+      setOpen(!open);
     }
   };
 
@@ -78,11 +85,15 @@ const AddCache = () => {
     // get synthetic pooled, async event properties (pass in values from dropdown button event)
     e.persist();
     if (e) e.preventDefault();
-    // update location state
+    // update location state for form submission
     handleChange({ [e.target.id]: e.target.innerHTML });
     // use google-generated result in query param
     getCoordinates(e.target.innerHTML);
     setOpen(false);
+  };
+
+  const handleRecaptcha = (e) => {
+    setValidationRes(false);
   };
 
   if (res.data) {
@@ -156,10 +167,14 @@ const AddCache = () => {
 
         {coordinates.data && (
           <label>
-            Refine Cache location
-            {values.coordinates && (
-              <h1>{`lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}</h1>
-            )}
+            Refine Cache Location
+            <label>
+              <h1>
+                Selection:
+                {values.coordinates
+                  && `lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}
+              </h1>
+            </label>
             <GoogleMap
               handler={handleChange}
               center={coordinates.data}
@@ -182,7 +197,15 @@ const AddCache = () => {
           />
           <Message>{errors.photo}</Message>
         </label>
-        <button type="submit">Create Cache</button>
+
+        {coordinates.data && (
+          <label>
+            <ReCAPTCHA sitekey={captchaKey} onChange={handleRecaptcha} />
+          </label>
+        )}
+        <button disabled={validationRes} type="submit">
+          Create Cache
+        </button>
       </fieldset>
     </Form>
   );
