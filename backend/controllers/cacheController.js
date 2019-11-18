@@ -5,8 +5,9 @@ const { body, validationResult, sanitizeBody } = require('express-validator');
 
 const Cache = mongoose.model('Cache');
 
-exports.caches = (req, res) => {
-  res.status(200).send('yo');
+exports.caches = async (req, res) => {
+  const caches = await Cache.find();
+  res.status(200).send(caches);
 };
 
 exports.addCache = async (req, res) => {
