@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import React from 'react';
 import axios from 'axios';
-import { Form } from '../styles/Form';
+import { FormStyle } from '../styles/FormStyle';
 
 const uri = process.env.DEV_API;
 
@@ -14,7 +14,7 @@ const Account = () => {
   };
 
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
+    <FormStyle method="POST" onSubmit={handleSubmit}>
       <fieldset>
         <h2>Account Details</h2>
         <label htmlFor="email">
@@ -32,7 +32,7 @@ const Account = () => {
         </label>
         <button type="submit">Save changes</button>
       </fieldset>
-    </Form>
+    </FormStyle>
   );
 };
 

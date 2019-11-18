@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Redirect } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
-import { Form, Message } from '../styles/Form';
+import { FormStyle, Message } from '../styles/FormStyle';
 import usePostAPI from './hooks/usePostAPI';
 import useForm from './hooks/useForm';
 import { validateRegistration } from './helpers/validator';
@@ -41,7 +41,7 @@ const Register = () => {
   }
 
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
+    <FormStyle method="POST" onSubmit={handleSubmit}>
       <fieldset disabled={res.loading} aria-busy={res.loading}>
         <h2>Create an Account</h2>
         <ErrorMessage errors={res.errors} />
@@ -91,7 +91,7 @@ const Register = () => {
         </label>
         <button type="submit">Sign Up!</button>
       </fieldset>
-    </Form>
+    </FormStyle>
   );
 };
 

@@ -17,7 +17,7 @@ import { validateNewCache } from './helpers/validator';
 import useGetAPI from './hooks/useGetAPI';
 import useDebounce from './hooks/useDebounce';
 // styles
-import { Form, Message } from '../styles/Form';
+import { FormStyle, Message } from '../styles/FormStyle';
 import {
   SearchStyle,
   DropDown,
@@ -58,6 +58,8 @@ const AddCache = () => {
   // 3a. ReCaptcha validation hook
   const [validationRes, setValidationRes] = useState(true);
 
+  const [image, uploadImage] = usePostAPI(`${uri}upload`);
+
   /**
    * Map-related hooks
    */
@@ -83,7 +85,6 @@ const AddCache = () => {
   // Address selection and get coordinates
   const handleSelection = (e) => {
     // get synthetic pooled, async event properties (pass in values from dropdown button event)
-    e.persist();
     if (e) e.preventDefault();
     // update location state for form submission
     handleChange({ [e.target.id]: e.target.innerHTML });
@@ -92,7 +93,16 @@ const AddCache = () => {
     setOpen(false);
   };
 
-  const handleRecaptcha = (e) => {
+  const handleUpload = (e) => {
+    if (e) e.preventDefault();
+    uploadImage(e);
+  };
+
+  const handleRecaptcha = () => {
+    // adding pre-fetch image URL to the body payload here, as it is the last step before creating
+    if (image.data) {
+      handleChange({ s3: image.data.s3[0].url.split('?')[0] });
+    }
     setValidationRes(false);
   };
 
@@ -101,10 +111,14 @@ const AddCache = () => {
   }
 
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
+    <FormStyle
+      method="POST"
+      onSubmit={handleSubmit}
+      enctype="multipart/form-data"
+    >
       <fieldset
         disabled={res.loading}
-        aria-busy={res.loading || autocomplete.loading}
+        aria-busy={res.loading || autocomplete.loading || image.loading}
       >
         <h2>Create a New Cache</h2>
         <ErrorMessage errors={res.errors} />
@@ -134,11 +148,11 @@ const AddCache = () => {
           <Message>{errors.description}</Message>
         </label>
         <label htmlFor="location">
-          General location
+          Approximate Address
           <input
             name="location"
             type="text"
-            placeholder="City, Park, Courtyard, Your favorite Tree"
+            placeholder="Street Address, City, Park, etc..."
             required
             onChange={handleAutocomplete}
             value={values.location || ''}
@@ -164,7 +178,7 @@ const AddCache = () => {
           </SearchStyle>
           <Message>{errors.location}</Message>
         </label>
-
+        {coordinates.loading && <label>Loading Map...</label>}
         {coordinates.data && (
           <label>
             Refine Cache Location
@@ -172,7 +186,7 @@ const AddCache = () => {
               <h1>
                 Selection:
                 {values.coordinates
-                  && `lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}
+                  && ` lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}
               </h1>
             </label>
             <GoogleMap
@@ -190,11 +204,17 @@ const AddCache = () => {
           <input
             name="photo"
             type="file"
-            accept="image/gif, image/png, image/jepg"
+            accept="image/gif, image/png, image/jpeg"
             placeholder="Add an optional photo"
-            onChange={handleChange}
-            value={values.photo || ''}
+            onChange={handleUpload}
           />
+          {image.loading && <label>Uploading Preview...</label>}
+          {image.data && (
+            <img
+              src={image.data.s3[0].url.split('?')[0]}
+              alt="Upload Preview"
+            />
+          )}
           <Message>{errors.photo}</Message>
         </label>
 
@@ -207,7 +227,7 @@ const AddCache = () => {
           Create Cache
         </button>
       </fieldset>
-    </Form>
+    </FormStyle>
   );
 };
 

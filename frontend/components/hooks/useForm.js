@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
 
 const useForm = (callback, validate) => {
@@ -21,6 +22,7 @@ const useForm = (callback, validate) => {
 
   // handle synthetic/non-synthetic variety of field event handlers
   const handleChange = (event) => {
+    debugger;
     let data;
     if (event.target) {
       event.persist();

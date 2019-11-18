@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const cacheController = require('../controllers/cacheController');
 const mapController = require('../controllers/mapContoller');
+const uploadController = require('../controllers/uploadController');
 
 // confirm login session for user
 router.get('/api/current_user', (req, res) => {
@@ -56,6 +57,15 @@ router.get(
   '/api/coordinates',
   authController.isLoggedIn,
   mapController.geocodeAddress,
+);
+
+/**
+ * Upload routes
+ */
+router.post(
+  '/api/upload',
+  authController.isLoggedIn,
+  uploadController.uploadImage,
 );
 
 module.exports = router;

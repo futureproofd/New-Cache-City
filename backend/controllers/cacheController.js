@@ -11,16 +11,22 @@ exports.caches = (req, res) => {
 
 exports.addCache = async (req, res) => {
   req.body.author = req.user._id;
+
   const loc = {
     type: 'Point',
     address: req.body.location,
     coordinates: [req.body.coordinates.lng, req.body.coordinates.lat],
   };
+
+  // middleware should pick up pre-signed URL from S3 provider, asynchronously
+  const imageURL = req.body.s3 || null;
+
   try {
     await new Cache({
       name: req.body.name,
       description: req.body.description,
       location: loc,
+      photo: imageURL,
       author: req.user._id,
     })
       .save()
@@ -28,7 +34,7 @@ exports.addCache = async (req, res) => {
         res.status(201).send({ cache, redirectURI: '/' });
       });
   } catch (err) {
-    res.status(500).send({ err });
+    res.send({ err });
   }
 };
 

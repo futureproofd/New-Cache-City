@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import ErrorMessage from './ErrorMessage';
 import usePostAPI from './hooks/usePostAPI';
-import { Form } from '../styles/Form';
+import { FormStyle } from '../styles/FormStyle';
 
 const uri = process.env.DEV_API;
 
@@ -27,7 +27,7 @@ const Login = () => {
   }
 
   return (
-    <Form method="POST" onSubmit={handleSubmit}>
+    <FormStyle method="POST" onSubmit={handleSubmit}>
       <fieldset disabled={res.loading} aria-busy={res.loading}>
         <h2>Login</h2>
         <ErrorMessage errors={res.errors} />
@@ -51,7 +51,7 @@ const Login = () => {
         </label>
         <button type="submit">Login</button>
       </fieldset>
-    </Form>
+    </FormStyle>
   );
 };
 
