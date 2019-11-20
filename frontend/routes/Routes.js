@@ -26,14 +26,16 @@ class Routes extends Component {
               </Layout>
             )}
           />
-          <Route
-            path="/caches"
-            render={props => (
-              <Layout {...props}>
-                <Caches />
-              </Layout>
-            )}
-          />
+          {this.props.auth && (
+            <Route
+              path="/caches"
+              render={props => (
+                <Layout {...props}>
+                  <Caches />
+                </Layout>
+              )}
+            />
+          )}
           <Route
             path="/cache"
             render={props => (

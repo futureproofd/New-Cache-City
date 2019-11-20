@@ -134,7 +134,7 @@ const AddCache = () => {
           />
           <Message>{errors.name}</Message>
         </label>
-        <label htmlFor="name">
+        <label htmlFor="description">
           Description
           <input
             name="description"
