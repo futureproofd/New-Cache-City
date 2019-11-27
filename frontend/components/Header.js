@@ -4,13 +4,13 @@ import Nav from './Nav';
 import HeaderStyle from '../styles/HeaderStyle';
 import LogoStyle from '../styles/LogoStyle';
 
-const Header = () => (
+const Header = auth => (
   <HeaderStyle>
     <div className="bar">
       <LogoStyle>
         <Link to="/">New Cache City</Link>
       </LogoStyle>
-      <Nav />
+      <Nav {...auth} />
     </div>
     <div className="sub-bar">search here</div>
   </HeaderStyle>

@@ -10,7 +10,7 @@ const Inner = styled.div`
   padding: 2rem;
 `;
 
-export default class TestPage extends Component {
+export default class Page extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>

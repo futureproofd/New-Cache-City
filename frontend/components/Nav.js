@@ -1,14 +1,13 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import NavStyle from '../styles/NavStyle';
 
-class Nav extends Component {
-  renderMenu() {
-    switch (this.props.auth) {
+const Nav = (props) => {
+  const renderMenu = () => {
+    switch (props.auth) {
       case null:
         return;
       case false:
@@ -29,15 +28,9 @@ class Nav extends Component {
           </Fragment>
         );
     }
-  }
+  };
 
-  render() {
-    return <NavStyle>{this.renderMenu()}</NavStyle>;
-  }
-}
+  return <NavStyle>{renderMenu()}</NavStyle>;
+};
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps)(Nav);
+export default Nav;

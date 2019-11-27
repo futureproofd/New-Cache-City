@@ -1,8 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Layout from '../components/Layout';
+import React, { Fragment } from 'react';
+import { Route, Switch } from 'react-router-dom';
+
 import Home from '../components/Home';
 import Caches from '../components/Caches';
 import CacheDetail from '../components/CacheDetail';
@@ -12,88 +11,42 @@ import Register from '../components/Register';
 import Account from '../components/Account';
 import Login from '../components/Login';
 
-class Routes extends Component {
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={props => (
-              <Layout {...props}>
-                <Home />
-              </Layout>
-            )}
-          />
-          {this.props.auth && (
-            <Route
-              path="/caches"
-              render={props => (
-                <Layout {...props}>
-                  <Caches />
-                </Layout>
-              )}
-            />
-          )}
-          <Route
-            path="/cache"
-            render={props => (
-              <Layout {...props}>
-                <CacheDetail {...props} />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/addcache"
-            render={props => (
-              <Layout {...props}>
-                <AddCache />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/map"
-            render={props => (
-              <Layout {...props}>
-                <Map />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/register"
-            render={props => (
-              <Layout {...props}>
-                <Register />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/login"
-            render={props => (
-              <Layout {...props}>
-                <Login />
-              </Layout>
-            )}
-          />
-          {this.props.auth && (
-            <Route
-              path="/account"
-              render={props => (
-                <Layout {...props}>
-                  <Account />
-                </Layout>
-              )}
-            />
-          )}
-        </Switch>
-      </Router>
-    );
-  }
-}
+const Routes = (props) => {
+  const renderRoutes = () => {
+    switch (props.auth) {
+      case null:
+        return (
+          <Fragment>
+            <Route path="/" exact render={() => <Home />} />
+            <Route path="/map" render={() => <Map />} />
+            <Route path="/register" render={() => <Register />} />
+            <Route path="/login" render={() => <Login />} />
+          </Fragment>
+        );
+      case false:
+        return (
+          <Fragment>
+            <Route path="/" exact render={() => <Home />} />
+            <Route path="/map" render={() => <Map />} />
+            <Route path="/register" render={() => <Register />} />
+            <Route path="/login" render={() => <Login />} />
+          </Fragment>
+        );
+      default:
+        return (
+          <Fragment>
+            <Route path="/" exact render={() => <Home />} />
+            <Route path="/caches" render={() => <Caches />} />
+            <Route path="/cache" render={props => <CacheDetail {...props} />} />
+            <Route path="/addcache" render={() => <AddCache />} />
+            <Route path="/account" render={() => <Account />} />
+            <Route path="/map" render={() => <Map />} />
+          </Fragment>
+        );
+    }
+  };
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+  return <Switch>{renderRoutes()}</Switch>;
+};
 
-export default connect(mapStateToProps)(Routes);
+export default Routes;
