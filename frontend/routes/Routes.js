@@ -1,99 +1,41 @@
-/* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Layout from '../components/Layout';
+/* eslint-disable react/jsx-filename-extension */
 import Home from '../components/Home';
-import Caches from '../components/Caches';
-import CacheDetail from '../components/CacheDetail';
 import AddCache from '../components/AddCache';
-import Map from '../components/Map';
-import Register from '../components/Register';
-import Account from '../components/Account';
+import App from '../components/App';
 import Login from '../components/Login';
-
-class Routes extends Component {
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={props => (
-              <Layout {...props}>
-                <Home />
-              </Layout>
-            )}
-          />
-          {this.props.auth && (
-            <Route
-              path="/caches"
-              render={props => (
-                <Layout {...props}>
-                  <Caches />
-                </Layout>
-              )}
-            />
-          )}
-          <Route
-            path="/cache"
-            render={props => (
-              <Layout {...props}>
-                <CacheDetail {...props} />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/addcache"
-            render={props => (
-              <Layout {...props}>
-                <AddCache />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/map"
-            render={props => (
-              <Layout {...props}>
-                <Map />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/register"
-            render={props => (
-              <Layout {...props}>
-                <Register />
-              </Layout>
-            )}
-          />
-          <Route
-            path="/login"
-            render={props => (
-              <Layout {...props}>
-                <Login />
-              </Layout>
-            )}
-          />
-          {this.props.auth && (
-            <Route
-              path="/account"
-              render={props => (
-                <Layout {...props}>
-                  <Account />
-                </Layout>
-              )}
-            />
-          )}
-        </Switch>
-      </Router>
-    );
-  }
-}
-
-function mapStateToProps({ auth }) {
-  return { auth };
-}
-
-export default connect(mapStateToProps)(Routes);
+import Register from '../components/Register';
+import Caches from '../components/Caches';
+import Cache from '../components/Cache';
+// our spread objects contain the component and any loadData function
+export default [
+  {
+    ...App,
+    routes: [
+      {
+        path: '/',
+        component: Home,
+        exact: true,
+      },
+      {
+        path: '/addcache',
+        component: AddCache,
+      },
+      {
+        path: '/login',
+        component: Login,
+      },
+      {
+        path: '/register',
+        component: Register,
+      },
+      {
+        path: '/caches',
+        component: Caches,
+      },
+      {
+        path: '/cache',
+        component: Cache,
+      },
+    ],
+  },
+];
