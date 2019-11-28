@@ -10,6 +10,12 @@ exports.caches = async (req, res) => {
   res.status(200).send(caches);
 };
 
+exports.searchCaches = async (req, res) => {
+  const caches = await Cache.find();
+  console.log('cache query sent');
+  res.status(200).send(caches);
+};
+
 exports.addCache = async (req, res) => {
   req.body.author = req.user._id;
 

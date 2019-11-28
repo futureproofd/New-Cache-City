@@ -74,3 +74,16 @@ export function validateNewCache(values) {
   }
   return errors;
 }
+
+export function validateQuery(values) {
+  const errors = {};
+  if (!values.search) {
+    errors.search = 'Provide a Cache Name!';
+  } else if (
+    /\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\<|\,|\.|\>|\?|\/|\""|\;|\:/.test(
+      values.search,
+    )
+  ) {
+    errors.search = 'No special characters allowed';
+  }
+}

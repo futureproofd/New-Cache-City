@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 const ItemStyle = styled.div`
   background: white;
-  border: 1px solid ${props => props.theme.offWhite};
+  border: 2px solid ${props => props.theme.offWhite};
   box-shadow: ${props => props.theme.bs};
   position: relative;
   display: flex;
+  margin: 6px;
   flex-direction: column;
   a,
   button {
@@ -21,18 +22,29 @@ const ItemStyle = styled.div`
     border: 0;
     cursor: pointer;
   }
+  h1 {
+    font-size: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    position: relative;
+    z-index: 2;
+    transform: skew(-7deg);
+    background: ${props => props.theme.grey};
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
   img {
     width: 100%;
     height: 200px;
     object-fit: cover;
   }
   p {
-    font-size: 11px;
     line-height: 2;
     font-weight: 200;
     flex-grow: 1;
     padding: 0 3rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
   .buttonList {
     display: grid;

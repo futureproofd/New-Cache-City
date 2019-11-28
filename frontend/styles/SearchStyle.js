@@ -43,9 +43,10 @@ const SearchStyle = styled.div`
   position: relative;
   input {
     width: 100%;
-    padding: 10px;
+    background: whitesmoke;
+    padding: 5px;
     border: 0;
-    font-size: 2rem;
+    font-size: 1.2rem;
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
     }

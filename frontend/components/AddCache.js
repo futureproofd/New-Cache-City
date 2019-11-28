@@ -161,8 +161,12 @@ const AddCache = () => {
             {open && (
               <DropDown>
                 {autocomplete.data
-                  && autocomplete.data.map(place => (
-                    <DropDownItem key={place.id} value={place.description}>
+                  && autocomplete.data.map((place, index) => (
+                    <DropDownItem
+                      key={place.id}
+                      value={place.description}
+                      highlighted={index}
+                    >
                       <DropDownButton
                         id="location"
                         onClick={handleSelection}

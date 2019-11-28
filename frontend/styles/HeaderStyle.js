@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledHeader = styled.header`
   .bar {
-    border-bottom: 5px solid black;
+    border-bottom: 3px solid black;
     display: grid;
     grid-template-columns: auto 1fr;
     justify-content: space-between;
@@ -14,6 +14,7 @@ const StyledHeader = styled.header`
   }
   .sub-bar {
     display: grid;
+    background: whitesmoke;
     grid-template-columns: 1fr auto;
     border-bottom: 1px solid black;
   }

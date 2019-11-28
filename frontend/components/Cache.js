@@ -23,14 +23,18 @@ const Cache = ({ item, user }) => {
         if (user._id === item.author) {
           return (
             <Fragment>
-              <Link to={{ pathname: '/cache', state: { item, user } }}>
-                <h1>Edit</h1>
-              </Link>
               <Link to={{ pathname: '/cache', state: { item } }}>
                 <h1>{item.name}</h1>
               </Link>
               <p>{item.description}</p>
               <img src={item.photo} alt={item.name} />
+              <Link to={{ pathname: '/cache', state: { item, user } }}>
+                <div className="buttonList">
+                  <button type="button">Edit</button>
+                  <button type="button">Star</button>
+                  <button type="button">Delete</button>
+                </div>
+              </Link>
             </Fragment>
           );
         }

@@ -22,7 +22,6 @@ const useForm = (callback, validate) => {
 
   // handle synthetic/non-synthetic variety of field event handlers
   const handleChange = (event) => {
-    debugger;
     let data;
     if (event.target) {
       event.persist();

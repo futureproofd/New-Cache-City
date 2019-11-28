@@ -45,6 +45,15 @@ router.post(
 );
 
 /**
+ * Search route
+ */
+router.get(
+  '/api/search',
+  authController.isLoggedIn,
+  cacheController.searchCaches,
+);
+
+/**
  * Map routes
  */
 router.get(

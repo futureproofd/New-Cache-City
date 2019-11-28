@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import HeaderStyle from '../styles/HeaderStyle';
 import LogoStyle from '../styles/LogoStyle';
+import Search from './Search';
 
 const Header = auth => (
   <HeaderStyle>
@@ -12,7 +13,9 @@ const Header = auth => (
       </LogoStyle>
       <Nav {...auth} />
     </div>
-    <div className="sub-bar">search here</div>
+    <div className="sub-bar">
+      <Search />
+    </div>
   </HeaderStyle>
 );
 
