@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';

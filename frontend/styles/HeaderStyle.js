@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledHeader = styled.header`
   .bar {
-    border-bottom: 10px solid black;
+    border-bottom: 5px solid black;
     display: grid;
     grid-template-columns: auto 1fr;
     justify-content: space-between;

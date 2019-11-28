@@ -1,8 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/Theme';
+import styled from 'styled-components';
 
 const Inner = styled.div`
   max-width: ${props => props.theme.maxWidth};
@@ -13,12 +12,10 @@ const Inner = styled.div`
 export default class Page extends Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <Inner>
-          <p>Page defaults here</p>
-          {this.props.children}
-        </Inner>
-      </ThemeProvider>
+      <Inner>
+        <p>Page defaults here</p>
+        {this.props.children}
+      </Inner>
     );
   }
 }

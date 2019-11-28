@@ -7,6 +7,20 @@ const ItemStyle = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  a,
+  button {
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1em;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
   img {
     width: 100%;
     height: 200px;

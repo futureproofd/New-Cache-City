@@ -1,12 +1,15 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable react/jsx-no-undef */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import { fetchUser } from '../actions';
 import Routes from '../routes/Routes';
 import Layout from './Layout';
+import theme from '../styles/Theme';
+import GlobalStyle from '../styles/GlobalStyle';
 
 class App extends Component {
   componentDidMount() {
@@ -15,11 +18,16 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Layout auth={this.props.auth}>
-          <Routes auth={this.props.auth} />
-        </Layout>
-      </Router>
+      <Fragment>
+        <GlobalStyle />
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Layout auth={this.props.auth}>
+              <Routes auth={this.props.auth} />
+            </Layout>
+          </Router>
+        </ThemeProvider>
+      </Fragment>
     );
   }
 }
