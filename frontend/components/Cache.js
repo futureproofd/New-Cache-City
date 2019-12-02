@@ -17,6 +17,9 @@ const Cache = ({ item, user }) => {
             </Link>
             <p>{item.description}</p>
             <img src={item.photo} alt={item.name} />
+            <div className="buttonList">
+              <button type="button">Star</button>
+            </div>
           </Fragment>
         );
       default:
@@ -28,13 +31,11 @@ const Cache = ({ item, user }) => {
               </Link>
               <p>{item.description}</p>
               <img src={item.photo} alt={item.name} />
-              <Link to={{ pathname: '/cache', state: { item, user } }}>
-                <div className="buttonList">
-                  <button type="button">Edit</button>
-                  <button type="button">Star</button>
-                  <button type="button">Delete</button>
-                </div>
-              </Link>
+              <div className="buttonList">
+                <button type="button">Edit</button>
+                <button type="button">Star</button>
+                <button type="button">Delete</button>
+              </div>
             </Fragment>
           );
         }

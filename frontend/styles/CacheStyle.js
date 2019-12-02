@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 
 const ItemStyle = styled.div`
-  background: white;
-  border: 2px solid ${props => props.theme.offWhite};
-  box-shadow: ${props => props.theme.bs};
   position: relative;
   display: flex;
   margin: 6px;
@@ -50,7 +47,7 @@ const ItemStyle = styled.div`
     display: grid;
     width: 100%;
     border-top: 1px solid ${props => props.theme.lightgrey};
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
     grid-gap: 1px;
     background: ${props => props.theme.lightgrey};
     & > * {

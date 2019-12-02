@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { fetchUser } from '../actions';
 import Routes from '../routes/Routes';
@@ -21,11 +21,11 @@ class App extends Component {
       <Fragment>
         <GlobalStyle />
         <ThemeProvider theme={theme}>
-          <Router>
+          <BrowserRouter>
             <Layout auth={this.props.auth}>
               <Routes auth={this.props.auth} />
             </Layout>
-          </Router>
+          </BrowserRouter>
         </ThemeProvider>
       </Fragment>
     );

@@ -24,6 +24,9 @@ import {
   DropDownItem,
   DropDownButton
 } from '../styles/SearchStyle';
+import Container from '../styles/containers/Container';
+import Card from '../styles/containers/Card';
+import Flex from '../styles/containers/Flex';
 
 /**
  * Note: The order of declaration matters here:
@@ -111,127 +114,133 @@ const AddCache = () => {
   }
 
   return (
-    <FormStyle
-      method="POST"
-      onSubmit={handleSubmit}
-      enctype="multipart/form-data"
-    >
-      <fieldset
-        disabled={res.loading}
-        aria-busy={res.loading || autocomplete.loading || image.loading}
-      >
-        <h2>Create a New Cache</h2>
-        <ErrorMessage errors={res.errors} />
-        <label htmlFor="name">
-          Cache Name
-          <input
-            name="name"
-            type="text"
-            placeholder="Provide an intriguing Cache name"
-            required
-            onChange={handleChange}
-            value={values.name || ''}
-          />
-          <Message>{errors.name}</Message>
-        </label>
-        <label htmlFor="description">
-          Description
-          <input
-            name="description"
-            type="textarea"
-            rows="3"
-            placeholder="Provide some details about the Cache"
-            required
-            onChange={handleChange}
-            value={values.description || ''}
-          />
-          <Message>{errors.description}</Message>
-        </label>
-        <label htmlFor="location">
-          Approximate Address
-          <input
-            name="location"
-            type="text"
-            placeholder="Street Address, City, Park, etc..."
-            required
-            onChange={handleAutocomplete}
-            value={values.location || ''}
-          />
-          <SearchStyle>
-            {open && (
-              <DropDown>
-                {autocomplete.data
-                  && autocomplete.data.map((place, index) => (
-                    <DropDownItem
-                      key={place.id}
-                      value={place.description}
-                      highlighted={index}
-                    >
-                      <DropDownButton
-                        id="location"
-                        onClick={handleSelection}
-                        type="button"
-                        value={place.description}
-                      >
-                        {place.description}
-                      </DropDownButton>
-                    </DropDownItem>
-                  ))}
-              </DropDown>
-            )}
-          </SearchStyle>
-          <Message>{errors.location}</Message>
-        </label>
-        {coordinates.loading && <label>Loading Map...</label>}
-        {coordinates.data && (
-          <label>
-            Refine Cache Location
-            <label>
-              <h1>
-                Selection:
-                {values.coordinates
-                  && ` lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}
-              </h1>
-            </label>
-            <GoogleMap
-              handler={handleChange}
-              center={coordinates.data}
-              name={values.name}
-              value={values.coordinates}
-            />
-            <Message>{errors.coordinates}</Message>
-          </label>
-        )}
+    <Container>
+      <Flex justifyCenter>
+        <Card big>
+          <FormStyle
+            method="POST"
+            onSubmit={handleSubmit}
+            enctype="multipart/form-data"
+          >
+            <fieldset
+              disabled={res.loading}
+              aria-busy={res.loading || autocomplete.loading || image.loading}
+            >
+              <h2>Create a New Cache</h2>
+              <ErrorMessage errors={res.errors} />
+              <label htmlFor="name">
+                Cache Name
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Provide an intriguing Cache name"
+                  required
+                  onChange={handleChange}
+                  value={values.name || ''}
+                />
+                <Message>{errors.name}</Message>
+              </label>
+              <label htmlFor="description">
+                Description
+                <input
+                  name="description"
+                  type="textarea"
+                  rows="3"
+                  placeholder="Provide some details about the Cache"
+                  required
+                  onChange={handleChange}
+                  value={values.description || ''}
+                />
+                <Message>{errors.description}</Message>
+              </label>
+              <label htmlFor="location">
+                Approximate Address
+                <input
+                  name="location"
+                  type="text"
+                  placeholder="Street Address, City, Park, etc..."
+                  required
+                  onChange={handleAutocomplete}
+                  value={values.location || ''}
+                />
+                <SearchStyle>
+                  {open && (
+                    <DropDown>
+                      {autocomplete.data
+                        && autocomplete.data.map((place, index) => (
+                          <DropDownItem
+                            key={place.id}
+                            value={place.description}
+                            highlighted={index}
+                          >
+                            <DropDownButton
+                              id="location"
+                              onClick={handleSelection}
+                              type="button"
+                              value={place.description}
+                            >
+                              {place.description}
+                            </DropDownButton>
+                          </DropDownItem>
+                        ))}
+                    </DropDown>
+                  )}
+                </SearchStyle>
+                <Message>{errors.location}</Message>
+              </label>
+              {coordinates.loading && <label>Loading Map...</label>}
+              {coordinates.data && (
+                <label>
+                  Refine Cache Location
+                  <label>
+                    <h1>
+                      Selection:
+                      {values.coordinates
+                        && ` lat: ${values.coordinates.lat}, lng: ${values.coordinates.lng}`}
+                    </h1>
+                  </label>
+                  <GoogleMap
+                    handler={handleChange}
+                    center={coordinates.data}
+                    name={values.name}
+                    value={values.coordinates}
+                  />
+                  <Message>{errors.coordinates}</Message>
+                </label>
+              )}
 
-        <label htmlFor="photo">
-          Optional Photo
-          <input
-            name="photo"
-            type="file"
-            accept="image/gif, image/png, image/jpeg"
-            placeholder="Add an optional photo"
-            onChange={handleUpload}
-          />
-          {image.loading && <label>Uploading Preview...</label>}
-          {image.data && (
-            <img
-              src={image.data.s3[0].url.split('?')[0]}
-              alt="Upload Preview"
-            />
-          )}
-          <Message>{errors.photo}</Message>
-        </label>
+              <label htmlFor="photo">
+                Optional Photo
+                <input
+                  name="photo"
+                  type="file"
+                  accept="image/gif, image/png, image/jpeg"
+                  placeholder="Add an optional photo"
+                  onChange={handleUpload}
+                />
+                {image.loading && <label>Uploading Preview...</label>}
+                {image.data && (
+                  <img
+                    src={image.data.s3[0].url.split('?')[0]}
+                    alt="Upload Preview"
+                  />
+                )}
+                <Message>{errors.photo}</Message>
+              </label>
 
-        {coordinates.data && (
-          <label>
-            <ReCAPTCHA sitekey={captchaKey} onChange={handleRecaptcha} />
-          </label>
-        )}
-        <button disabled={validationRes} type="submit">
-          Create Cache
-        </button>
-      </fieldset>
-    </FormStyle>
+              {coordinates.data && (
+                <label>
+                  <ReCAPTCHA sitekey={captchaKey} onChange={handleRecaptcha} />
+                </label>
+              )}
+              <button disabled={validationRes} type="submit">
+                Create Cache
+              </button>
+            </fieldset>
+          </FormStyle>
+        </Card>
+      </Flex>
+    </Container>
   );
 };
 
