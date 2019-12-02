@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Cache /> Renders and matches the snapshot 1`] = `
+<styled.div>
+  <Link
+    to={
+      Object {
+        "pathname": "/cache",
+        "state": Object {
+          "item": Object {
+            "_id": "someObjId",
+            "author": "someObjId",
+            "createDate": "20191128",
+            "description": "testing 123",
+            "image": "cache.jpg",
+            "location": Object {
+              "address": "123 fake street",
+              "coordinates": Array [
+                Object {
+                  "lat": "123",
+                },
+                Object {
+                  "lng": "456",
+                },
+              ],
+            },
+            "name": "fake cache",
+            "photo": "cake.jpg",
+          },
+        },
+      }
+    }
+  >
+    <h1>
+      fake cache
+    </h1>
+  </Link>
+  <p>
+    testing 123
+  </p>
+  <img
+    alt="fake cache"
+    src="cake.jpg"
+  />
+</styled.div>
+`;

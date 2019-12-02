@@ -10,26 +10,26 @@ const ItemStyle = styled.div`
   flex-direction: column;
   a,
   button {
-    padding: 1rem 3rem;
+    padding: 1rem 1rem;
     display: flex;
     align-items: center;
     position: relative;
     text-transform: uppercase;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1em;
     background: none;
     border: 0;
     cursor: pointer;
   }
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     position: relative;
     z-index: 2;
     transform: skew(-7deg);
-    background: ${props => props.theme.grey};
+    background: ${props => props.theme.blue};
     color: white;
     text-transform: uppercase;
     text-decoration: none;
