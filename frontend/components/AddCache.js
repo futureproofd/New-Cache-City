@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable no-undef */
@@ -7,6 +8,7 @@
 /* eslint-disable indent */
 import React, { useState } from 'react';
 
+import Downshift from 'downshift';
 import { Redirect } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 import ErrorMessage from './ErrorMessage';
@@ -71,7 +73,6 @@ const AddCache = () => {
   );
 
   const [coordinates, getCoordinates] = useGetAPI(`${uri}coordinates?q=`);
-  const [open, setOpen] = useState(false);
 
   // map autocomplete
   const handleAutocomplete = (e) => {
@@ -81,19 +82,15 @@ const AddCache = () => {
     // get google locaiton
     if (debouncedValue) {
       getAutocomplete();
-      setOpen(!open);
     }
   };
 
   // Address selection and get coordinates
   const handleSelection = (e) => {
-    // get synthetic pooled, async event properties (pass in values from dropdown button event)
-    if (e) e.preventDefault();
     // update location state for form submission
-    handleChange({ [e.target.id]: e.target.innerHTML });
+    handleChange({ location: e.description });
     // use google-generated result in query param
-    getCoordinates(e.target.innerHTML);
-    setOpen(false);
+    getCoordinates(e.description);
   };
 
   const handleUpload = (e) => {
@@ -155,36 +152,50 @@ const AddCache = () => {
               </label>
               <label htmlFor="location">
                 Approximate Address
-                <input
-                  name="location"
-                  type="text"
-                  placeholder="Street Address, City, Park, etc..."
-                  required
-                  onChange={handleAutocomplete}
-                  value={values.location || ''}
-                />
-                <SearchStyle>
-                  {open && (
-                    <DropDown>
-                      {autocomplete.data
-                        && autocomplete.data.map((place, index) => (
-                          <DropDownItem
-                            key={place.id}
-                            value={place.description}
-                            highlighted={index}
-                          >
-                            <DropDownButton
-                              id="location"
-                              onClick={handleSelection}
-                              type="button"
-                              value={place.description}
-                            >
-                              {place.description}
-                            </DropDownButton>
-                          </DropDownItem>
-                        ))}
-                    </DropDown>
-                  )}
+                <SearchStyle formField>
+                  <Downshift
+                    onChange={handleSelection}
+                    itemToString={item => (item === null ? "" : item.description)
+                    }
+                  >
+                    {({
+                      getInputProps,
+                      getItemProps,
+                      isOpen,
+                      inputValue,
+                      highlightedIndex
+                    }) => (
+                      <div>
+                        <input
+                          {...getInputProps({
+                            type: 'search',
+                            placeholder: 'Enter approximate address',
+                            id: 'location',
+                            name: 'location',
+                            className: autocomplete.loading ? 'loading' : '',
+                            onChange: (e) => {
+                              e.persist();
+                              handleAutocomplete(e);
+                            }
+                          })}
+                        />
+                        {isOpen && (
+                          <DropDown>
+                            {autocomplete.data
+                              && autocomplete.data.map((item, index) => (
+                                <DropDownItem
+                                  {...getItemProps({ item })}
+                                  key={item.id}
+                                  highlighted={index === highlightedIndex}
+                                >
+                                  {item.description}
+                                </DropDownItem>
+                              ))}
+                          </DropDown>
+                        )}
+                      </div>
+                    )}
+                  </Downshift>
                 </SearchStyle>
                 <Message>{errors.location}</Message>
               </label>

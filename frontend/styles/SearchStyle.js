@@ -43,9 +43,9 @@ const SearchStyle = styled.div`
   position: relative;
   input {
     width: 100%;
-    background: whitesmoke;
+    background: ${props => (props.formField ? '#fff' : props.theme.offWhite)};
     padding: 5px;
-    border: 0;
+    border: ${props => (props.formField ? '1px solid black' : 0)};
     font-size: 1.2rem;
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
