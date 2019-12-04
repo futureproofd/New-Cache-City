@@ -19,13 +19,13 @@ const Container = styled.div`
 
   padding-top: ${(props) => {
     if (props.fullVertical) return 0;
-    if (props.tight) return '15px';
+    if (props.tight) return '10px';
     return '25px';
   }};
 
   padding-bottom: ${(props) => {
     if (props.fullVertical) return 0;
-    if (props.tight) return '15px';
+    if (props.tight) return '10px';
     return '25px';
   }};
 `;

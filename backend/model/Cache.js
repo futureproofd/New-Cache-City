@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const validator = require('validator');
 
 const { Schema } = mongoose;
@@ -51,5 +52,6 @@ const cacheSchema = new Schema({
 });
 
 cacheSchema.plugin(mongodbErrorHandler);
+cacheSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Cache', cacheSchema);
