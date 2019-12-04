@@ -4,27 +4,42 @@ import axios from 'axios';
 export default function (url) {
   const [res, setRes] = useState({ data: null, error: null, loading: false });
 
-  const callAPI = useEffect(() => {
-    setRes(prevState => ({ ...prevState, loading: true }));
-    axios
-      .get(url, { withCredentials: true })
-      .then((resolve) => {
-        setRes({
-          data: resolve.data,
-          loading: false,
-          submitting: false,
-        });
-      })
-      .catch((err) => {
-        const errors = err.request.response
-          ? JSON.parse(err.request.response)
-          : err.message;
-        setRes({
-          data: null,
-          loading: false,
-          errors,
-        });
-      });
-  }, []);
+  /**
+   * takes optional param for custom query string
+   */
+  const callAPI = useEffect(
+    (param) => {
+      setRes(prevState => ({ ...prevState, loading: true }));
+
+      async function fetchData() {
+        try {
+          let result;
+          if (param) {
+            result = await axios.get(url + param, { withCredentials: true });
+          } else {
+            result = await axios.get(url, { withCredentials: true });
+          }
+
+          setRes({
+            data: result.data,
+            loading: false,
+            submitting: false,
+          });
+        } catch (err) {
+          const errors = err.request.response
+            ? JSON.parse(err.request.response)
+            : err.message;
+          setRes({
+            data: null,
+            loading: false,
+            errors,
+          });
+        }
+      }
+      // invoke async function for result
+      fetchData();
+    },
+    [url],
+  );
   return [res, callAPI];
 }
