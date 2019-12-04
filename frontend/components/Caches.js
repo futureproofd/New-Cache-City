@@ -16,8 +16,6 @@ const Caches = ({ auth }) => {
   const [caches, getCaches] = useGetCaches(`${uri}caches?page=${pageNum}`);
 
   const onPageChange = (cursor) => {
-    console.log('cursor pos: ', cursor);
-
     setPage(cursor);
   };
 
