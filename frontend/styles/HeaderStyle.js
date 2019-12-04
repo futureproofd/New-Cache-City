@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledHeader = styled.header`
   .bar {
-    border-bottom: 3px solid black;
+    border-bottom: 2px solid ${props => props.theme.black};
     display: grid;
     grid-template-columns: auto 1fr;
     justify-content: space-between;
@@ -16,7 +16,7 @@ const StyledHeader = styled.header`
     display: grid;
     background: whitesmoke;
     grid-template-columns: 1fr auto;
-    border-bottom: 1px solid black;
+    box-shadow: 0 4px 7px -2px ${props => props.theme.black};
   }
 `;
 

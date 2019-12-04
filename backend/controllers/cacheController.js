@@ -5,8 +5,16 @@ const { body, validationResult, sanitizeBody } = require('express-validator');
 
 const Cache = mongoose.model('Cache');
 
+/**
+ * Pagination-based query returns a subset of caches with page-related properties
+ */
 exports.caches = async (req, res) => {
-  const caches = await Cache.find();
+  const options = {
+    page: req.query.page || 1,
+    limit: req.query.limit || 9,
+  };
+
+  const caches = await Cache.paginate({}, options);
   res.status(200).send(caches);
 };
 

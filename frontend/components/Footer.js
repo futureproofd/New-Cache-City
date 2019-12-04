@@ -5,6 +5,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FooterStyle from '../styles/FooterStyle';
+import Container from '../styles/containers/Container';
 import Logout from './Logout';
 
 class Footer extends Component {
@@ -32,7 +33,11 @@ class Footer extends Component {
   }
 
   render() {
-    return <FooterStyle>{this.renderMenu()}</FooterStyle>;
+    return (
+      <Container full tight>
+        <FooterStyle>{this.renderMenu()}</FooterStyle>
+      </Container>
+    );
   }
 }
 
