@@ -13,7 +13,8 @@ import Layout from './Layout';
 import theme from '../styles/Theme';
 import GlobalStyle from '../styles/GlobalStyle';
 
-const initialState = { settings: { page: 1 } };
+// hold all user-related session settings on Context
+const initialUserState = { settings: { cachePage: 1 } };
 
 class App extends Component {
   componentDidMount() {
@@ -23,7 +24,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <UserProvider initialState={initialState} reducer={userReducer}>
+        <UserProvider initialState={initialUserState} reducer={userReducer}>
           <GlobalStyle />
           <ThemeProvider theme={theme}>
             <BrowserRouter>

@@ -46,7 +46,7 @@ exports.addCache = async (req, res) => {
     })
       .save()
       .then((cache) => {
-        res.status(201).send({ cache, redirectURI: '/' });
+        res.status(201).send({ cache, redirectURI: `/cache/${cache._id}` });
       });
   } catch (err) {
     res.send({ err });

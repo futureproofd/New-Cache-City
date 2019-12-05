@@ -16,13 +16,15 @@ import Card from '../styles/containers/Card';
 import Flex from '../styles/containers/Flex';
 
 const CacheDetail = (props) => {
-  const [isOpen, setOpen] = useState(false);
+  const [isMapOpen, setMapOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(!isOpen);
+  const handleOpenMap = () => {
+    setMapOpen(!isMapOpen);
   };
 
+  // pass cache item and user via props when routed from Caches / AddCache
   const { item, user } = props.location.state;
+
   return (
     <Container>
       <Flex justifyCenter>
@@ -74,19 +76,19 @@ const CacheDetail = (props) => {
               <MapImage
                 name="staticMapPrev"
                 alt={item.location.address}
-                onClick={handleOpen}
+                onClick={handleOpenMap}
                 src={`https://maps.googleapis.com/maps/api/staticmap?center=${item.location.coordinates[1]},${item.location.coordinates[0]}&zoom=17&size=700x200&key=${process.env.GOOGLE_API_KEY}&markers=${item.location.coordinates[1]},${item.location.coordinates[0]}&scale=2`}
               />
-              {isOpen && (
+              {isMapOpen && (
                 <dialog
                   open
                   style={{ position: 'absolute' }}
-                  onClick={handleOpen}
+                  onClick={handleOpenMap}
                 >
                   <DialogImage
                     name="staticMap"
                     alt={item.location.address}
-                    onClick={handleOpen}
+                    onClick={handleOpenMap}
                     src={`https://maps.googleapis.com/maps/api/staticmap?center=${item.location.coordinates[1]},${item.location.coordinates[0]}&zoom=19&size=1000x500&key=${process.env.GOOGLE_API_KEY}&markers=${item.location.coordinates[1]},${item.location.coordinates[0]}&scale=2`}
                   />
                 </dialog>

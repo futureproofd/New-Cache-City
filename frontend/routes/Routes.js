@@ -38,8 +38,11 @@ const Routes = (props) => {
           <Fragment>
             <Route path="/" exact render={() => <Home />} />
             <Route path="/caches" render={() => <Caches />} />
-            <Route path="/cache" render={props => <CacheDetail {...props} />} />
-            <Route path="/addcache" render={() => <AddCache />} />
+            <Route
+              path="/cache/:id"
+              render={props => <CacheDetail {...props} />}
+            />
+            <Route path="/addcache" render={props => <AddCache {...props} />} />
             <Route path="/account" render={() => <Account />} />
             <Route path="/map" render={() => <Map />} />
           </Fragment>

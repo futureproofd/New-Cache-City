@@ -12,7 +12,7 @@ const Cache = ({ item, user }) => {
       case false:
         return (
           <Fragment>
-            <Link to={{ pathname: '/cache', state: { item } }}>
+            <Link to={{ pathname: `/cache/${item._id}`, state: { item } }}>
               <h1>{item.name}</h1>
             </Link>
             <p>{item.description}</p>
@@ -26,7 +26,7 @@ const Cache = ({ item, user }) => {
         if (user._id === item.author) {
           return (
             <Fragment>
-              <Link to={{ pathname: '/cache', state: { item } }}>
+              <Link to={{ pathname: `/cache/${item._id}`, state: { item } }}>
                 <h1>{item.name}</h1>
               </Link>
               <p>{item.description}</p>

@@ -18,7 +18,7 @@ exports.login = (req, res, next) => {
         return next(err);
       }
       // send a redirect URI back to react-land for routing purposes
-      res.status(201).send({ user: user.email, redirectURI: '/' });
+      res.status(201).send({ user, redirectURI: '/' });
       next();
     });
   })(req, res, next);
@@ -26,7 +26,7 @@ exports.login = (req, res, next) => {
 
 exports.logout = (req, res) => {
   req.logout();
-  res.status(200).send({ redirectURI: '/' });
+  res.status(200).send({ auth: false, redirectURI: '/' });
 };
 
 /**
