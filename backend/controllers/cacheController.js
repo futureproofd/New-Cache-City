@@ -18,9 +18,14 @@ exports.caches = async (req, res) => {
   res.status(200).send(caches);
 };
 
+/**
+ * For now, quick serarch is limited by location
+ * todo conditional query param (if q else granular search)
+ */
 exports.searchCaches = async (req, res) => {
-  const caches = await Cache.find();
-  console.log('cache query sent');
+  const caches = await Cache.find({
+    'location.address': { $regex: `.*${req.query.q}.*`, $options: 'i' },
+  });
   res.status(200).send(caches);
 };
 

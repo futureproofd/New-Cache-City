@@ -44,7 +44,7 @@ const Caches = ({ auth }) => {
               loading={caches.loading}
             />
           </Flex>
-          <Flex justifyCenter>
+          <Flex justifyCenter scrollable>
             {caches.data.docs
               && caches.data.docs.map(item => (
                 <Card key={item._id}>

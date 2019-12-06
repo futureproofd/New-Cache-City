@@ -35,6 +35,8 @@ const Flex = styled.div`
     return 'stretch';
   }};
   flex-direction: ${props => (props.column ? 'column' : 'row')};
+  overflow-y: ${props => (props.scrollable ? 'scroll' : null)};
+  max-height: ${props => (props.scrollable ? '50vw' : null)};
 `;
 
 export const Column = styled.div`

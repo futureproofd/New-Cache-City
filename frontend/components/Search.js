@@ -46,7 +46,7 @@ const Search = () => {
             <input
               {...getInputProps({
                 type: 'search',
-                placeholder: 'Search Caches',
+                placeholder: 'Search by location',
                 id: 'search',
                 className: results.loading ? 'loading' : '',
                 onChange: (e) => {
@@ -63,7 +63,7 @@ const Search = () => {
                     key={item.id}
                     highlighted={index === highlightedIndex}
                   >
-                    {item.description}
+                    {`${item.name}: ${item.description.substr(0, 20)}...`}
                   </DropDownItem>
                 ))}
               </DropDown>
